@@ -20,11 +20,11 @@ export default function CoverImage({ title, image, path }: CoverImageProps) {
         responsive={[
           {
             size: { width: 160, height: 120 },
-            maxWidth: 320,
+            maxWidth: 400,
           },
           {
-            size: { width: 320, height: 240 },
-            maxWidth: 400,
+            size: { width: 200, height: 150 },
+            maxWidth: 600,
           },
         ]}
         options={{
