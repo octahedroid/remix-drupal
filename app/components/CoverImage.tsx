@@ -16,8 +16,6 @@ export default function CoverImage({ title, image, path }: CoverImageProps) {
       className={cn("shadow-small", {
         "hover:shadow-medium transition-shadow duration-200": path,
       })}
-      width={640}
-      height={480}
     />
   );
   return (

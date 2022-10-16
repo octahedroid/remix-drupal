@@ -3,9 +3,9 @@ import { nodeByPathQuery, nodeArticlesTeaserQuery } from "./queries";
 
 export const nodeByPath = async (path: string) => {
   const client = await drupalClient();
-  const data = await client.request(nodeByPathQuery, { path });
+  const {nodeByPath} = await client.request(nodeByPathQuery, { path });
   
-  return data;
+  return nodeByPath;
 };
 
 

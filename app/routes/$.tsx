@@ -14,11 +14,11 @@ export const loader: LoaderFunction = async ({ params }) => {
   const path = params["*"] as string;
   const node = await nodeByPath(path);
 
-  if (node.nodeByPath === null) {
+  if (node === null) {
     return redirect("/404");
   }
 
-  return json({ node: node.nodeByPath }, { status: 200 });
+  return json({ node }, { status: 200 });
 };
 
 export default function Index() {

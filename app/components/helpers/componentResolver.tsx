@@ -1,5 +1,7 @@
 import ParagraphHeroCta from "../paragraph/ParagraphHeroCta";
 import ParagraphText from "../paragraph/ParagraphText";
+import ParagraphImage from "../paragraph/ParagraphImage";
+import ParagraphCodeBlock from "../paragraph/ParagraphCodeBlock";
 
 const resolve = (component: any) => {
   if (component.__typename.includes(`ParagraphHeroCta`)) {
@@ -12,6 +14,7 @@ const resolve = (component: any) => {
       />
     );
   }
+
   if (component.__typename.includes(`ParagraphText`)) {
     return (
       <ParagraphText
@@ -19,6 +22,25 @@ const resolve = (component: any) => {
         text={component.textRich.processed}
       />
     );
+  }
+
+  if (component.__typename.includes(`ParagraphImage`)) {
+    return (
+      <ParagraphImage
+        image={component.image}
+      />
+    );
+  }
+
+  if (component.__typename.includes(`ParagraphCodeBlock`)) {
+    return (
+        <ParagraphCodeBlock
+            title={component.title}
+            code={component.code}
+            language={component.language}
+            showLineNumbers={component.showLineNumbers}
+        />
+    )
   }
 
   return <></>;

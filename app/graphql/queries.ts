@@ -8,11 +8,35 @@ export const linkFragment = gql`
   }
 `;
 
+const textFragment = gql`
+  fragment Text on Text {
+    format
+    value
+    processed
+  }
+`;
+
+const mediaImageFragment = gql`
+  fragment MediaImage on MediaImage {
+    mediaImage {
+      url
+    }
+  }
+`;
+
+const userFragment = gql`
+  fragment User on User {
+    displayName
+    picture {
+      ...MediaImage
+    }
+  }
+`;
+
 const paragraphHeroCtaFragment = gql`
   ${linkFragment}
   fragment ParagraphHeroCta on ParagraphHeroCta {
     id
-
     status
     created
     cta {
@@ -21,14 +45,6 @@ const paragraphHeroCtaFragment = gql`
     intro
     text
     title
-  }
-`;
-
-const textFragment = gql`
-  fragment Text on Text {
-    format
-    value
-    processed
   }
 `;
 
@@ -45,16 +61,50 @@ const paragraphTextFragment = gql`
   }
 `;
 
+export const paragraphCodeBlockFragment = gql`
+  fragment ParagraphCodeBlock on ParagraphCodeBlock {
+    title
+    code
+    language
+    showLineNumbers
+  }
+`
+
+export const paragraphHeroTextFragment = gql`
+  fragment ParagraphHeroText on ParagraphHeroText {
+    intro
+    text
+    title
+  }
+`;
+
+export const paragraphImageFragment = gql`
+  fragment ParagraphImage on ParagraphImage {
+    image {
+      ...MediaImage
+    }
+  }
+`;
+
 export const nodeArticleFragment = gql`
   fragment NodeArticle on NodeArticle {
     id
     title
     path
-
+    image {
+      ...MediaImage
+    }
+    author {
+      ...User
+    }
+    created
     components {
       __typename
       ...ParagraphHeroCta
+      ...ParagraphHeroText
       ...ParagraphText
+      ...ParagraphImage
+      ...ParagraphCodeBlock
     }
   }
 `;
@@ -68,7 +118,9 @@ export const nodePageFragment = gql`
     components {
       __typename
       ...ParagraphHeroCta
+      ...ParagraphHeroText
       ...ParagraphText
+      ...ParagraphImage
     }
   }
 `;
@@ -83,25 +135,20 @@ export const nodeNodeArticleTeaserFragment = gql`
       summary
     }
     image {
-      mediaImage {
-        url
-      }
+      ...MediaImage
     }
     author {
-      displayName
-      picture {
-        mediaImage {
-          url
-        }
-      }
+      ...User
     }
   }
 `;
 
 export const nodeArticlesTeaserQuery = gql`
+  ${mediaImageFragment}
+  ${userFragment}
   ${nodeNodeArticleTeaserFragment}
 
-  {
+  query nodeArticlesTeaser {
     nodeArticlesTeaser: nodeArticles(first: 10) {
       nodes {
         ...NodeArticleTeaser
@@ -111,8 +158,13 @@ export const nodeArticlesTeaserQuery = gql`
 `;
 
 export const nodeByPathQuery = gql`
+  ${mediaImageFragment}
+  ${userFragment}
   ${paragraphHeroCtaFragment}
+  ${paragraphHeroTextFragment}
   ${paragraphTextFragment}
+  ${paragraphImageFragment}
+  ${paragraphCodeBlockFragment}
   ${nodeArticleFragment}
   ${nodePageFragment}
 
