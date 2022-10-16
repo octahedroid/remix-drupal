@@ -22,7 +22,7 @@ export default function Cover({ title, image, date, author }:CoverProps) {
         <Date dateString={date} />
       </div>
       <div className="mb-8 md:mb-16 -mx-5 sm:mx-0">
-        <CoverImage title={title} path={''} image={image} />
+        <CoverImage title={title} path={''} image={image} width={1280} height={960} />
       </div>
       <div className="max-w-2xl mx-auto">
         <div className="block md:hidden mb-6">

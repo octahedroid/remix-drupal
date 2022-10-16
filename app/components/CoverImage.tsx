@@ -6,10 +6,12 @@ import type {MediaImage} from '~/@types/entities';
 interface CoverImageProps {
   title: string;
   path: string;
-  image: MediaImage
+  image: MediaImage;
+  width: number;
+  height: number;
 }
 
-export default function CoverImage({ title, image, path }: CoverImageProps) {
+export default function CoverImage({ title, path, image, width, height }: CoverImageProps) {
   const RemixImage = (
       <Image
         src={image.mediaImage.url}
@@ -17,14 +19,16 @@ export default function CoverImage({ title, image, path }: CoverImageProps) {
         className={cn("shadow-small", {
           "hover:shadow-medium transition-shadow duration-200": path,
         })}
+        width={width}
+        height={height}
         responsive={[
           {
             size: { width: 160, height: 120 },
-            maxWidth: 400,
+            maxWidth: 600,
           },
           {
             size: { width: 200, height: 150 },
-            maxWidth: 600,
+            maxWidth: 960,
           },
         ]}
         options={{

@@ -24,7 +24,7 @@ export default function NodeArticleTeaser({
   return (
     <div>
       <div className="mb-5">
-        <CoverImage path={path} title={title} image={image} />
+        <CoverImage title={title} path={path} image={image} width={800} height={600} />
       </div>
       <h3 className="text-3xl mb-3 leading-snug">
         <Link prefetch='intent' to={path} className="hover:underline">
