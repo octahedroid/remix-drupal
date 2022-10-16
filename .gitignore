@@ -1,0 +1,14 @@
+# node
+node_modules
+
+# framework 
+/.cache
+/build
+/dist
+/public/build
+/.mf
+.env
+app/styles/app.css
+
+# cloudflare
+wrangler.toml
