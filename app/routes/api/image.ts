@@ -10,8 +10,6 @@ import {
 } from "remix-image/serverPure";
 import { wasmTransformer } from "remix-image-wasm";
 
-const SELF_URL = "http://localhost:8787";
-
 export const myResolver: Resolver = async (asset, url, options, basePath) => {
   if (asset.startsWith("/") && (asset.length === 1 || asset[1] !== "/")) {
     return kvResolver(asset, url, options, basePath);

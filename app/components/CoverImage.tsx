@@ -34,6 +34,13 @@ export default function CoverImage({ title, path, image, width, height }: CoverI
         options={{
           quality:75,
         }}
+        style={{
+          backgroundSize: 'cover',
+          backgroundColor: '#eee',
+          width: '100%',
+          height: 'auto',
+        }}
+        loading="lazy"
         dprVariants={[1, 3]}
       />
   );

@@ -1,11 +1,6 @@
 import { GraphQLClient } from "graphql-request";
 const FormData = require("form-data");
 
-// ENV values from wrangler.toml
-declare var DRUPAL_URI: string;
-declare var DRUPAL_CLIENT_ID: string;
-declare var DRUPAL_CLIENT_SECRET: string;
-
 interface OAuth {
   token_type: string;
   expires_in: number;
