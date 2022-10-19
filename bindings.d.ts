@@ -6,5 +6,5 @@ declare global {
   const DRUPAL_CLIENT_ID: string;
   const DRUPAL_CLIENT_SECRET: string;
 
-  const SELF_URL: string;
+  const ENVIRONMENT: string;
 }

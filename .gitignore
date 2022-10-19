@@ -7,8 +7,10 @@ node_modules
 /dist
 /public/build
 /.mf
-.env
 app/styles/app.css
+
+.env
+.env.development
 
 # cloudflare
 wrangler.toml

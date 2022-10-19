@@ -16,10 +16,32 @@ const textFragment = gql`
   }
 `;
 
+const imageFragment = gql`
+  fragment Image on Image {
+    url
+    width
+    height
+  }
+`;
+
+const imageStyleFragment = gql`
+  fragment ImageStyle on ImageStyle {
+    url
+    width
+    height
+    style
+  }
+`;
+
 const mediaImageFragment = gql`
+  ${imageFragment}
+  ${imageStyleFragment}
   fragment MediaImage on MediaImage {
     mediaImage {
-      url
+      ...Image
+      styles {
+        ...ImageStyle
+      }
     }
   }
 `;
