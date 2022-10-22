@@ -8,7 +8,6 @@ export const nodeByPath = async (path: string) => {
   return nodeByPath;
 };
 
-
 export const nodeArticlesTeaser = async () => {
   const client = await drupalClient();
   const { nodeArticlesTeaser } = await client.request(nodeArticlesTeaserQuery);
