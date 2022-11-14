@@ -2,7 +2,7 @@ import drupalGraphQLClient from "drupal-graphql-client"
 
 export const drupalClient = async () => {
   return await drupalGraphQLClient(
-    DRUPAL_URI,
+    DRUPAL_GRAPHQL_URI,
     "client_credentials",
     {
       clientId: DRUPAL_CLIENT_ID,
@@ -10,6 +10,7 @@ export const drupalClient = async () => {
     },
     {
       fetcher: fetch,
+      authURI: DRUPAL_AUTH_URI,
     }
   );
 }
