@@ -1,13 +1,43 @@
 import type { LoaderFunction } from "@remix-run/cloudflare";
 import { json } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import { nodeArticlesTeaser } from "~/graphql/queries.server";
+
+import getToken from '~/drupal/auth.server'
+import { getClient } from '~/drupal/client.server'
+import { MediaImageFragment } from "~/drupal/fragments.server";
+
 import NodeArticleTeaser from "~/components/node/NodeArticleTeaser";
 
 export const loader: LoaderFunction = async () => {
-  const nodeArticles = await nodeArticlesTeaser();
+  const token = await getToken();
+  const drupalClient = getClient(token)
 
-  return json({ nodes: nodeArticles.nodes }, { status: 200 });
+  const { nodeArticles: { nodes } } = await drupalClient.query({
+    nodeArticles: {
+      __args: { first: 10 },
+      nodes: {
+        __typename: true,
+        id: true,
+        title: true,
+        created: true,
+        path: true,
+        body: {
+          summary: true,
+        },
+        image: {
+          ...MediaImageFragment,
+        },
+        author: {
+          displayName: true,
+          picture: {
+            ...MediaImageFragment,
+          }
+        }
+      }
+    }
+  })
+
+  return json({ nodes }, { status: 200 });
 };
 
 export default function Index() {

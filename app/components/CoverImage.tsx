@@ -1,17 +1,17 @@
 import { Link } from '@remix-run/react'
-import type { MediaImage, ImageStyle } from '~/@types/entities';
+import type { MediaImage, ImageStyle} from '~/@types/gen/schema';
 
 interface CoverImageProps {
   title: string;
   path: string;
-  image: MediaImage;
+  image: MediaImage | undefined;
   width: number;
   height: number;
   styleName: string;
 }
 
 export default function CoverImage({ title, path, image, width, height, styleName }: CoverImageProps) {
-  const imageStyle = image.mediaImage.styles.find((style) => style.style === styleName) as ImageStyle;
+  const imageStyle = image?.mediaImage?.styles?.find((style) => style?.style === styleName) as ImageStyle;
   const Image = (
       <img
         src={imageStyle.url}

@@ -1,27 +1,16 @@
 import { Fragment } from "react";
+import type { NodeArticle } from '~/@types/gen/schema';
 import Cover from "~/components/Cover";
-import type { MediaImage, Author } from '~/@types/entities';
 import { componentResolver } from "~/components/helpers/componentResolver";
 
-interface NodeArticleProps {
-  title: string;
-  path: string;
-  image: MediaImage;
-  created: string;
-  author: Author;
-  components: {
-    __typename: string;
-    id: string;
-  };
-}
-
-export default function NodeArticle({ node }: { node: NodeArticleProps }) {
+export default function NodeArticleComponent({ node }: { node: NodeArticle }) {
   const components = componentResolver(node.components) as [];
+
   return (
     <>
       <Cover
         title={node.title}
-        image={node.image}
+        image={node?.image}
         date={node.created}
         author={node.author}
       />

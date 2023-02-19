@@ -1,19 +1,11 @@
 import { Fragment } from "react";
+import type { NodePage } from '~/@types/gen/schema';
 import Title from "~/components/field/Title";
 import { componentResolver } from "~/components/helpers/componentResolver";
 
-interface NodePageProps {
-  title: string;
-  showTitle: boolean;
-  path: string;
-  components: {
-    __typename: string;
-    id: string;
-  };
-}
-
-export default function NodePage({ node }: { node: NodePageProps }) {
+export default function NodePageComponent({ node }: { node: NodePage }) {
   const components = componentResolver(node.components) as [];
+
   return (
     <>
       { node.showTitle && <Title>{node.title}</Title>}

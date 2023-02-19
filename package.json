@@ -11,7 +11,8 @@
     "dev:miniflare": "cross-env NODE_ENV=development miniflare ./build/index.js --watch --env .env.development",
     "dev:css": "tailwindcss -w -i ./styles/app.css -o app/styles/app.css",
     "dev": "remix build && run-p \"dev:*\"",
-    "start": "cross-env NODE_ENV=production miniflare ./build/index.js"
+    "start": "cross-env NODE_ENV=production miniflare ./build/index.js",
+    "sync:genql": "npx ts-node scripts/sync-genql.ts"
   },
   "dependencies": {
     "@remix-run/cloudflare": "^1.7.2",
@@ -22,19 +23,20 @@
     "classnames": "^2.3.2",
     "cross-env": "^7.0.3",
     "date-fns": "^2.29.3",
-    "drupal-graphql-client": "^0.1.4",
-    "graphql": "^16.6.0",
+    "drupal-auth-client": "^0.2.0",
     "react": "^17.0.2",
     "react-code-blocks": "^0.0.9-0",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.14.1",
+    "@genql/cli": "^3.0.3",
     "@remix-run/dev": "^1.7.2",
     "@remix-run/eslint-config": "^1.7.2",
     "@types/react": "^17.0.47",
     "@types/react-dom": "^17.0.17",
     "autoprefixer": "^10.4.12",
+    "dotenv": "^16.0.3",
     "eslint": "^8.23.1",
     "miniflare": "^2.6.0",
     "npm-run-all": "^4.1.5",

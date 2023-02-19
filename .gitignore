@@ -12,5 +12,8 @@ app/styles/app.css
 .env
 .env.development
 
+# genreted files
+/app/@types/gen/
+
 # cloudflare
 wrangler.toml

@@ -1,12 +1,13 @@
+import type { MediaImage, User as Author } from '~/@types/gen/schema';
 import Avatar from "~/components/Avatar";
 import Date from "~/components/Date";
 import CoverImage from "~/components/CoverImage";
 import Title from "~/components/field/Title";
-import type { MediaImage, Author } from '~/@types/entities';
+
 
 interface CoverProps {
   title: string;
-  image: MediaImage;
+  image: MediaImage | undefined;
   date: string;
   author: Author;
 }
