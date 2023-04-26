@@ -1,13 +1,18 @@
-import type { LoaderArgs } from "@remix-run/cloudflare";
+import type { LoaderArgs, V2_MetaFunction } from "@remix-run/cloudflare";
 import { json, redirect } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 
-import type { NodePage, NodeArticle } from '~/@types/gen/schema';
+import { Fragment } from "react";
+
+import type { NodePage } from '~/@types/gen/schema';
+
+import { metaTags } from "~/components/helpers/seo";
 
 import getToken from '~/drupal/auth.server'
 import { getClient } from '~/drupal/client.server'
 import { 
   MediaImageFragment, 
+  MetaTagFragment,
   ParagraphCodeBlockFragment,
   ParagraphHeroCtaFragment,
   ParagraphHeroTextFragment,
@@ -22,89 +27,111 @@ const NodeTypeComponents = new Map();
 NodeTypeComponents.set('NodeArticle', NodeArticleComponent);
 NodeTypeComponents.set('NodePage', NodePageComponent);
 
-const isValidNode = (node: NodePage | NodeArticle | undefined) => {
-  return node &&
-    node !== undefined &&
-    Array.from(NodeTypeComponents.keys()).includes(node.__typename);
-}
+export const meta: V2_MetaFunction = ({
+  data,
+}: {
+  data: { node: { metatag: any } };
+}) => {
+  return metaTags(data.node.metatag) as any;
+};
 
 export const loader = async ({ params }: LoaderArgs) => {
   const path = params["*"] as string;
   const token = await getToken();
   const drupalClient = getClient(token)
 
-  const { nodeByPath : node } = await drupalClient.query({
-    nodeByPath: {
+  const { route } = await drupalClient.query({
+    route: {
       __args: {
         path: path,
       },
       __typename: true,
-      on_NodeArticle: {
-        id: true,
-        title: true,
-        path: true,
-        created: true,
-        image: {
-          ...MediaImageFragment,
-        },
-        author: {
-          displayName: true,
-          picture: {
-            ...MediaImageFragment,
-          }
-        },
-        components: {
+      on_RouteInternal: {
+        entity: {
           __typename: true,
-          on_ParagraphCodeBlock: {
-            ...ParagraphCodeBlockFragment,
+          on_NodeArticle: {
+            id: true,
+            title: true,
+            path: true,
+            image: {
+              on_MediaImage: {
+                ...MediaImageFragment,
+              }
+            },
+            author: {
+              __scalar: true,
+              name: true,
+              picture: {
+                on_MediaImage: {
+                  ...MediaImageFragment,
+                }
+              }
+            },
+            components: {
+              __typename: true,
+              on_ParagraphCodeBlock: {
+                ...ParagraphCodeBlockFragment,
+              },
+              on_ParagraphHeroCta: {
+                ...ParagraphHeroCtaFragment,
+              },
+              on_ParagraphHeroText: {
+                ...ParagraphHeroTextFragment,
+              },
+              on_ParagraphText: {
+                ...ParagraphTextFragment,
+              },
+              on_ParagraphImage: {
+                ...ParagraphImageFragment,
+              }
+            },
+            metatag: {
+              ...MetaTagFragment,
+              __typename: true,
+            },
           },
-          on_ParagraphHeroCta: {
-             ...ParagraphHeroCtaFragment,
-          },
-          on_ParagraphHeroText: {
-            ...ParagraphHeroTextFragment,
-          },
-          on_ParagraphText: {
-            ...ParagraphTextFragment,
-          },
-          on_ParagraphImage: {
-            ...ParagraphImageFragment,
-          }
-        }
-      },
-      on_NodePage: {
-        id: true,
-        title: true,
-        path: true,
-        showTitle: true,
-        components: {
-          __typename: true,
-          on_ParagraphHeroCta: {
-             ...ParagraphHeroCtaFragment,
-          },
-          on_ParagraphHeroText: {
-            ...ParagraphHeroTextFragment,
-          },
-          on_ParagraphText: {
-            ...ParagraphTextFragment,
-          },
-          on_ParagraphImage: {
-            ...ParagraphImageFragment,
+          on_NodePage: {
+            id: true,
+            title: true,
+            path: true,
+            showTitle: true,
+            components: {
+              __typename: true,
+              on_ParagraphHeroCta: {
+                ...ParagraphHeroCtaFragment,
+              },
+              on_ParagraphHeroText: {
+                ...ParagraphHeroTextFragment,
+              },
+              on_ParagraphText: {
+                ...ParagraphTextFragment,
+              },
+              on_ParagraphImage: {
+                ...ParagraphImageFragment,
+              }
+            },
+            metatag: {
+              ...MetaTagFragment,
+              __typename: true,
+            },
           }
         }
       }
     }
   })
 
-  if (!isValidNode(node)) {
+  if (!route || route.__typename !== "RouteInternal") {
     return redirect("/404");
   }
 
-  return json({ node }, { status: 200 });
+  return json(
+    { node: route.entity },
+    { status: 200 }
+  );
 };
 
 export default function Index() {
-  const { node } =  useLoaderData() as { node: NodePage | NodeArticle };
+  const { node } = useLoaderData() as { node: NodePage };
   const Component = NodeTypeComponents.get(node.__typename);
 
   if (!node || !Component) {
@@ -112,8 +139,8 @@ export default function Index() {
   }
 
   return (
-    <div>
+    <Fragment>
       <Component node={node} />
-    </div>
-  );
+    </Fragment>
+  )
 }

@@ -1,13 +1,13 @@
 import { Link } from '@remix-run/react'
 import type { NodeArticle } from '~/@types/gen/schema';
 import Avatar from "~/components/Avatar";
-import Date from "~/components/Date";
+// import Date from "~/components/Date";
 import CoverImage from "~/components/CoverImage";
 
 export default function NodeArticleTeaser({
   title,
   image,
-  created,
+  // created,
   body,
   author,
   path,
@@ -24,10 +24,10 @@ export default function NodeArticleTeaser({
         </Link>
       </h3>
       <div className="text-lg mb-4">
-        <Avatar name={author.displayName} picture={author?.picture} />
+        <Avatar name={author.name} picture={author?.picture} />
       </div>
       <div className="text-lg mb-4">
-        <Date dateString={created} />
+        {/* <Date dateString={created} /> */}
       </div>
       <p className="text-lg leading-relaxed mb-4">{body?.summary}</p>
     </div>

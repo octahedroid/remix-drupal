@@ -1,5 +1,5 @@
 import { Link } from '@remix-run/react'
-import type { MediaImage, ImageStyle} from '~/@types/gen/schema';
+import type { MediaImage} from '~/@types/gen/schema';
 
 interface CoverImageProps {
   title: string;
@@ -11,10 +11,10 @@ interface CoverImageProps {
 }
 
 export default function CoverImage({ title, path, image, width, height, styleName }: CoverImageProps) {
-  const imageStyle = image?.mediaImage?.styles?.find((style) => style?.style === styleName) as ImageStyle;
+  // const imageStyle = image?.mediaImage?.styles?.find((style) => style?.style === styleName) as ImageStyle;
   const Image = (
       <img
-        src={imageStyle.url}
+        src={image?.mediaImage.url}
         alt={`Teaser for ${title}`}
         width={width}
         height={height}

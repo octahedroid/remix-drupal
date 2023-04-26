@@ -11,7 +11,7 @@ export default function NodeArticleComponent({ node }: { node: NodeArticle }) {
       <Cover
         title={node.title}
         image={node?.image}
-        date={node.created}
+        // date={node.created}
         author={node.author}
       />
       {components.map((component: any, index: number) => {

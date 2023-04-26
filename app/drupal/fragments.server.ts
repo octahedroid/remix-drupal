@@ -1,8 +1,8 @@
 import type {
   ImageGenqlSelection,
-  ImageStyleGenqlSelection,
   LinkGenqlSelection,
   MediaImageGenqlSelection,
+  MetaTagGenqlSelection,
   ParagraphCodeBlockGenqlSelection,
   ParagraphHeroCtaGenqlSelection,
   ParagraphHeroTextGenqlSelection,
@@ -12,10 +12,14 @@ import type {
 } from '~/@types/gen';
 
 const LinkFragment: LinkGenqlSelection = {
-  uri: true,
-  link: true,
+  url: true,
   title: true,
-}
+  route: {
+    on_RouteInternal: {
+      url: true,
+    },
+  },
+};
 
 const TextFragment: TextGenqlSelection = {
   format: true,
@@ -23,28 +27,20 @@ const TextFragment: TextGenqlSelection = {
   processed: true,
 }
 
-const ImageStyleFragment: ImageStyleGenqlSelection = {
-  url: true,
-  width: true,
-  height: true,
-  style: true
-}
-
 const ImageFragment: ImageGenqlSelection = {
   url: true,
   width: true,
   height: true,
-  styles: ImageStyleFragment,
-}
+  title: true,
+  alt: true,
+};
 
 export const MediaImageFragment: MediaImageGenqlSelection = {
-  mediaImage: ImageFragment
-}
+  mediaImage: { ...ImageFragment },
+};
 
 export const ParagraphHeroCtaFragment: ParagraphHeroCtaGenqlSelection = {
   id: true,
-  status: true,
-  created: true,
   cta: LinkFragment,
   intro: true,
   text: true,
@@ -53,14 +49,12 @@ export const ParagraphHeroCtaFragment: ParagraphHeroCtaGenqlSelection = {
 
 export const ParagraphTextFragment: ParagraphTextGenqlSelection = {
   id: true,
-  status: true,
-  created: true,
   textRich: TextFragment,
   title: true
 }
 
 export const ParagraphCodeBlockFragment: ParagraphCodeBlockGenqlSelection = {
-  title: true,
+  titleOptional: true,
   code: true,
   language: true,
   showLineNumbers: true
@@ -73,5 +67,30 @@ export const ParagraphHeroTextFragment: ParagraphHeroTextGenqlSelection = {
 }
 
 export const ParagraphImageFragment: ParagraphImageGenqlSelection = {
-  image: MediaImageFragment,
+  image: {
+    on_MediaImage: {
+      mediaImage: { ...ImageFragment },
+    }
+  }
 }
+
+export const MetaTagFragment: MetaTagGenqlSelection = {
+  on_MetaTagLink: {
+    attributes: {
+      rel: true,
+      href: true,
+    },
+  },
+  on_MetaTagValue: {
+    attributes: {
+      name: true,
+      content: true,
+    },
+  },
+  on_MetaTagProperty: {
+    attributes: {
+      property: true,
+      content: true,
+    },
+  },
+};
