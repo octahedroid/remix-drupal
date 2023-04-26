@@ -20,9 +20,6 @@ export const loader: LoaderFunction = async () => {
         id: true,
         title: true,
         path: true,
-        body: {
-          summary: true,
-        },
         image: {
           on_MediaImage: {
             ...MediaImageFragment,

@@ -58,8 +58,8 @@ export const loader = async ({ params }: LoaderArgs) => {
                 ...MediaImageFragment,
               }
             },
+            summary: true,
             author: {
-              __scalar: true,
               name: true,
               picture: {
                 on_MediaImage: {
@@ -95,6 +95,12 @@ export const loader = async ({ params }: LoaderArgs) => {
             title: true,
             path: true,
             showTitle: true,
+            image: {
+              on_MediaImage: {
+                ...MediaImageFragment,
+              }
+            },
+            summary: true,
             components: {
               __typename: true,
               on_ParagraphHeroCta: {
