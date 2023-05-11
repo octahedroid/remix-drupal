@@ -3,6 +3,9 @@ node_modules
 
 # framework 
 /.cache
+/functions/\[\[path\]\].js
+/functions/\[\[path\]\].js.map
+.dev.vars
 /build
 /dist
 /public/build
@@ -17,3 +20,7 @@ app/styles/app.css
 
 # cloudflare
 wrangler.toml
+
+# yalc
+.yalc
+yalc.lock
