@@ -1,12 +1,12 @@
 import drupalAuthClient from "drupal-auth-client"
 
-const getToken = async () => {
+const getToken = async (context: any) => {
   const client = await drupalAuthClient(
-    DRUPAL_AUTH_URI,
+    context.DRUPAL_AUTH_URI,
     "client_credentials",
     {
-      clientId: DRUPAL_CLIENT_ID,
-      clientSecret: DRUPAL_CLIENT_SECRET,
+      clientId: context.DRUPAL_CLIENT_ID,
+      clientSecret: context.DRUPAL_CLIENT_SECRET,
     },
     {
       fetcher: fetch,

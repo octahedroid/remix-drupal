@@ -6,7 +6,7 @@ import drupalAuthClient from "drupal-auth-client"
 
 (async () => {
   // Load environment variables from .env.development file
-  const envPath = path.join(__dirname, '../.env.development')
+  const envPath = path.join(__dirname, '../.dev.vars')
   dotenv.config({ path: envPath })
 
   // Call drupalAuthClient to get a header token

@@ -4,14 +4,12 @@ import { useLoaderData } from "@remix-run/react";
 
 import { Fragment } from "react";
 
-import type { NodePage } from '~/@types/gen/schema';
+import type { MetaTagUnion, NodePage } from "~/@types/gen/schema";
 
-import { metaTags } from "~/components/helpers/seo";
-
-import getToken from '~/drupal/auth.server'
-import { getClient } from '~/drupal/client.server'
-import { 
-  MediaImageFragment, 
+import getToken from "~/drupal/auth.server";
+import { getClient } from "~/drupal/client.server";
+import {
+  MediaImageFragment,
   MetaTagFragment,
   ParagraphCodeBlockFragment,
   ParagraphHeroCtaFragment,
@@ -22,23 +20,24 @@ import {
 
 import NodeArticleComponent from "~/components/node/NodeArticle";
 import NodePageComponent from "~/components/node/NodePage";
+import { metaTags } from "drupal-remix";
 
 const NodeTypeComponents = new Map();
-NodeTypeComponents.set('NodeArticle', NodeArticleComponent);
-NodeTypeComponents.set('NodePage', NodePageComponent);
+NodeTypeComponents.set("NodeArticle", NodeArticleComponent);
+NodeTypeComponents.set("NodePage", NodePageComponent);
 
 export const meta: V2_MetaFunction = ({
   data,
 }: {
-  data: { node: { metatag: any } };
+  data: { node: { metatag: MetaTagUnion[] } };
 }) => {
   return metaTags(data.node.metatag) as any;
 };
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params, context }: LoaderArgs) => {
   const path = params["*"] as string;
-  const token = await getToken();
-  const drupalClient = getClient(token)
+  const token = await getToken(context);
+  const drupalClient = getClient(token, context);
 
   const { route } = await drupalClient.query({
     route: {
@@ -56,7 +55,7 @@ export const loader = async ({ params }: LoaderArgs) => {
             image: {
               on_MediaImage: {
                 ...MediaImageFragment,
-              }
+              },
             },
             summary: true,
             author: {
@@ -64,8 +63,8 @@ export const loader = async ({ params }: LoaderArgs) => {
               picture: {
                 on_MediaImage: {
                   ...MediaImageFragment,
-                }
-              }
+                },
+              },
             },
             components: {
               __typename: true,
@@ -83,7 +82,7 @@ export const loader = async ({ params }: LoaderArgs) => {
               },
               on_ParagraphImage: {
                 ...ParagraphImageFragment,
-              }
+              },
             },
             metatag: {
               ...MetaTagFragment,
@@ -98,7 +97,7 @@ export const loader = async ({ params }: LoaderArgs) => {
             image: {
               on_MediaImage: {
                 ...MediaImageFragment,
-              }
+              },
             },
             summary: true,
             components: {
@@ -114,26 +113,23 @@ export const loader = async ({ params }: LoaderArgs) => {
               },
               on_ParagraphImage: {
                 ...ParagraphImageFragment,
-              }
+              },
             },
             metatag: {
               ...MetaTagFragment,
               __typename: true,
             },
-          }
-        }
-      }
-    }
-  })
+          },
+        },
+      },
+    },
+  });
 
   if (!route || route.__typename !== "RouteInternal") {
     return redirect("/404");
   }
 
-  return json(
-    { node: route.entity },
-    { status: 200 }
-  );
+  return json({ node: route.entity }, { status: 200 });
 };
 
 export default function Index() {
@@ -148,5 +144,5 @@ export default function Index() {
     <Fragment>
       <Component node={node} />
     </Fragment>
-  )
+  );
 }
