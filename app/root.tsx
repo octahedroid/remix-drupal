@@ -1,4 +1,4 @@
-import type { MetaFunction, LoaderFunction } from "@remix-run/cloudflare";
+import type { LoaderFunction, LinksFunction } from "@remix-run/cloudflare";
 import { json } from "@remix-run/cloudflare";
 import {
   Links,
@@ -14,12 +14,11 @@ import Container from "./components/Container";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { syncDrupalPreviewRoutes } from "drupal-remix";
+import stylesheet from "~/tailwind.css";
 
-import styles from "./styles/app.css";
-
-export function links() {
-  return [{ rel: "stylesheet", href: styles }];
-}
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: stylesheet },
+];
 
 export const loader: LoaderFunction = async ({ context }) => {
   return json(
