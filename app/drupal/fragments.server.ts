@@ -14,11 +14,7 @@ import type {
 const LinkFragment: LinkGenqlSelection = {
   url: true,
   title: true,
-  route: {
-    on_RouteInternal: {
-      url: true,
-    },
-  },
+  internal: true,
 };
 
 const TextFragment: TextGenqlSelection = {

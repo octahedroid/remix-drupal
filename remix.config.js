@@ -1,8 +1,9 @@
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
+  tailwind: true,
   devServerBroadcastDelay: 1000,
   ignoredRouteFiles: ["**/.*"],
-  server: "./server.js",
+  server: "./server.ts",
   serverBuildPath: "functions/[[path]].js",
   serverConditions: ["worker"],
   serverDependenciesToBundle: "all",
@@ -18,6 +19,5 @@ module.exports = {
     v2_meta: true,
     v2_normalizeFormMethod: true,
     v2_routeConvention: true,
-    unstable_tailwind: true,
   },
 };
